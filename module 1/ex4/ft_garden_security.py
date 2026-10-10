@@ -13,17 +13,17 @@ class Plant():
             self._age = age
         print(f"Plant created: {self.show()}")
 
-    def show(self):
+    def show(self) -> str:
         return f"{self._name}: {self._height}cm, {self._age} days old"
 
-    def set_age(self, age: int):
+    def set_age(self, age: int) -> None:
         if age < 0:
             print(f"{self._name.capitalize()}: Error, age can't be negative")
             print("Age update rejected")
             return
         self._age = age
 
-    def set_height(self, height: int):
+    def set_height(self, height: int) -> None:
         if height < 0:
             print(f"{self._name.capitalize()}: "
                   f"Error, height can't be negative")
@@ -31,10 +31,10 @@ class Plant():
             return
         self._height = height
 
-    def get_height(self):
+    def get_height(self) -> int:
         return self._height
 
-    def get_age(self):
+    def get_age(self) -> int:
         return self._age
 
 

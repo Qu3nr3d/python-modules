@@ -1,5 +1,5 @@
 def ft_harvest_total():
-    harvests = [0,0,0]
+    harvests = [0, 0, 0]
     total_harvest = 0
     i = 0
     while i < 3:

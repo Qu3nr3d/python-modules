@@ -5,13 +5,13 @@ class Plant():
         self.age_days = age
         print(f"Created: {self.show()}")
 
-    def show(self):
+    def show(self) -> str:
         return f"{self.name}: {self.height}cm, {self.age_days} days old"
 
-    def age(self, days: int):
+    def age(self, days: int) -> None:
         self.age_days += days
 
-    def grow(self, growth: int):
+    def grow(self, growth: int) -> None:
         self.height += growth
 
 
