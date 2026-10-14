@@ -1,15 +1,15 @@
 class GardenError(Exception):
-    def __init__(self, message) -> None:
+    def __init__(self, message: str) -> None:
         super().__init__(message)
 
 
 class PlantError(GardenError):
-    def __init__(self, message) -> None:
+    def __init__(self, message: str) -> None:
         super().__init__(message)
 
 
 class WaterError(GardenError):
-    def __init__(self, message) -> None:
+    def __init__(self, message: str) -> None:
         super().__init__(message)
 
 
@@ -19,7 +19,8 @@ def water_plant(plant_name: str) -> None:
     else:
         raise PlantError(f"Invalid plant name to water: '{plant_name}'")
 
-def test_watering_system(plants: list) -> None:
+
+def test_watering_system(plants: list[str]) -> None:
     print("Opening watering system")
     try:
         for plant in plants:
@@ -32,10 +33,11 @@ def test_watering_system(plants: list) -> None:
     finally:
         print("Closing watering system\n")
 
+
 if __name__ == "__main__":
     print("=== Garden Watering System ===\n")
-    valid_plants: list = ["Tomato", "Lettuce", "Carrots"]
-    invalid_plants: list = ["Tomato", "lettuce", "Carrots"]
+    valid_plants: list[str] = ["Tomato", "Lettuce", "Carrots"]
+    invalid_plants: list[str] = ["Tomato", "lettuce", "Carrots"]
     print("Testing valid plants...")
     test_watering_system(valid_plants)
     print("Testing invalid plants...")

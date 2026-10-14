@@ -28,11 +28,12 @@ def create_dic():
         inventory_dict.update({item: quantity})
     return inventory_dict
 
+
 def check_duplicate(inv, item):
     for key in inv:
         if key == item:
             return True
-    return False      
+    return False
 
 
 def add_item(inv):
@@ -52,7 +53,8 @@ if __name__ == "__main__":
             max_quanity = {key: value}
         elif value < list(min_quanity.values())[0]:
             min_quanity = {key: value}
-        print(f"Item {key} represents {round((value/sum(inv.values()) * 100), 1)}%")
+        print(f"Item {key} represents "
+              f"{round((value/sum(inv.values()) * 100), 1)}%")
     max_item = list(max_quanity.keys())[0]
     max_quantity = list(max_quanity.values())[0]
 
@@ -63,6 +65,3 @@ if __name__ == "__main__":
     print(f"Item least abundant: {min_item} with quantity {min_quantity}")
     add_item(inv)
     print(f"Updated inventory: {inv}")
-
-
-

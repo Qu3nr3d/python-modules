@@ -60,7 +60,7 @@ class Plant:
         self._age += days
         self._stats.add_age()
 
-    def set_height(self, height: int) ->None:
+    def set_height(self, height: int) -> None:
         if height < 0:
             print(f"{self._name}: Error, height can't be negative")
             print("Height update rejected")
@@ -130,8 +130,9 @@ class Seed(Flower):
 
 
 class Tree(Plant):
-    class TreeStatistics():
+    class TreeStatistics(Plant._Statistics):
         def __init__(self) -> None:
+            super().__init__()
             self._shade_count = 0
 
         def add_shade(self) -> None:
@@ -145,7 +146,7 @@ class Tree(Plant):
                  trunk_diameter: float) -> None:
         super().__init__(name, height, age)
         self._trunk_diameter = trunk_diameter
-        self._stats = self.TreeStatistics()
+        self._stats: Tree.TreeStatistics = self.TreeStatistics()
 
     def produce_shade(self) -> None:
         self._stats.add_shade()
@@ -158,9 +159,6 @@ class Tree(Plant):
         super().show()
         print(f"Trunk diameter: "
               f"{round(self._trunk_diameter, 1)}cm")
-
-    def display(self) -> None:
-        
 
 
 class Vegetable(Plant):
