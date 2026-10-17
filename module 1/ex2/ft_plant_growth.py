@@ -23,5 +23,5 @@ if __name__ == "__main__":
         print(f"=== Day {i + 1} ===")
         plant1.age(1)
         plant1.grow(0.8)
-        print(f"{plant1.name}: {plant1.height}cm, {plant1.age_days} days old")
+        print(f"{plant1.name}: {round(plant1.height, 1)}cm, {plant1.age_days} days old")
     print(f"Growth this week: {round(plant1.height - start_height, 1)} cm")

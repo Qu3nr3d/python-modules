@@ -1,15 +1,15 @@
 from math import sqrt
 
 
-def get_player_pos():
+def get_player_pos() -> tuple[float, float, float]:
     while True:
         coordinates: str = str(input("Enter new coordinates"
                                      " as floats in format 'x,y,z': "))
-        x = ""
-        y = ""
-        z = ""
-        current = 0
-        commas = 0
+        x: str = ""
+        y: str = ""
+        z: str = ""
+        current: int = 0
+        commas: int = 0
 
         for c in coordinates:
             if c == ",":
@@ -27,27 +27,27 @@ def get_player_pos():
             continue
 
         try:
-            x = float(x)
+            xx: float = float(x)
         except ValueError:
             print(f"Error on parameter '{x}':"
                   f" could not convert string to float: '{x}'")
             continue
 
         try:
-            y = float(y)
+            yy: float = float(y)
         except ValueError:
             print(f"Error on parameter '{y}':"
                   f" could not convert string to float: '{y}'")
             continue
 
         try:
-            z = float(z)
+            zz: float = float(z)
         except ValueError:
             print(f"Error on parameter '{z}':"
                   f" could not convert string to float: '{z}'")
             continue
 
-        return x, y, z
+        return xx, yy, zz
 
 
 if __name__ == "__main__":

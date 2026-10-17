@@ -24,7 +24,7 @@ achievements = {
 }
 
 
-def gen_player_achievements():
+def gen_player_achievements() -> set[str]:
     random_num: int = random.randint(4, 10)
     return set(random.sample(achievements, random_num))
 
