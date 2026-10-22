@@ -1,7 +1,7 @@
 from sys import argv
 
 
-def main():
+def main() -> None:
     if len(argv) < 2:
         print("Usage: ft_archive_creation.py <file>")
         return
@@ -26,8 +26,8 @@ def main():
     part_2(data)
 
 
-def part_2(data):
-    transformed_data = ""
+def part_2(data: str) -> None:
+    transformed_data: str = ""
 
     for char in data:
         if char == "\n":
@@ -42,7 +42,7 @@ def part_2(data):
     print("---")
     print(transformed_data)
 
-    new_file_name = input("Enter new file name (or empty): ")
+    new_file_name: str = input("Enter new file name (or empty): ")
 
     if new_file_name:
         try:

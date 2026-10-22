@@ -1,7 +1,7 @@
 import sys
 
 
-def main():
+def main() -> None:
     if len(sys.argv) < 2:
         print("Usage: ft_stream_management.py <file>")
         return
@@ -26,7 +26,7 @@ def main():
     part_2(data)
 
 
-def part_2(data):
+def part_2(data: str) -> None:
     transformed_data = ""
 
     for char in data:
@@ -59,7 +59,8 @@ def part_2(data):
 
             print(f"Data saved in file '{new_file_name}'.")
         except OSError as e:
-            sys.stderr.write(f"[STDERR] Error opening file '{new_file_name}': {e}\n")
+            sys.stderr.write(f"[STDERR] Error opening file"
+                             f" '{new_file_name}': {e}\n")
             print("Data not saved.")
     else:
         print("Not saving data.")

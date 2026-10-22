@@ -1,7 +1,7 @@
 from sys import argv
 
 
-def main():
+def main() -> None:
     if len(argv) < 2:
         print("Usage: ft_ancient_text.py <file>")
         return

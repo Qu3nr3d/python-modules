@@ -1,4 +1,4 @@
-def secure_archive(file_name, action = None, data = None):
+def secure_archive(file_name: str, action: str="", data: str="") -> tuple[bool, str]:
     try:
         if action == "r":
             with open(file_name, "r") as f:
