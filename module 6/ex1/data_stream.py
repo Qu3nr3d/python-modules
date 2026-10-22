@@ -2,6 +2,9 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 class DataProcessor(ABC):
+    def __init__(self):
+        self.processed = 0
+
     @abstractmethod
     def validate(self, data: Any) -> bool:
         pass
@@ -17,6 +20,7 @@ class DataProcessor(ABC):
             return (tup)
         except IndexError as e:
             print(f"{e}")
+            
 
 
 class NumericProcessor(DataProcessor):
@@ -41,9 +45,11 @@ class NumericProcessor(DataProcessor):
             for i in data:
                 self.processor.append((self.signature, str(i)))
                 self.signature += 1
+                self.processed += 1
             return
         self.processor.append((self.signature, str(data)))
         self.signature += 1
+        self.processed += 1
 
 
 class TextProcessor(DataProcessor):
@@ -67,10 +73,12 @@ class TextProcessor(DataProcessor):
         if isinstance(data, list):
             for i in data:
                 self.processor.append((self.signature, i))
+                self.processed += 1
                 self.signature += 1
             return
         self.processor.append((self.signature, data))
         self.signature += 1
+        self.processed += 1
 
 
 class LogProcessor(DataProcessor):
@@ -95,66 +103,77 @@ class LogProcessor(DataProcessor):
             for i in data:
                 self.processor.append((self.signature, i))
                 self.signature += 1
+                self.processed += 1
             return
         self.processor.append((self.signature, data))
         self.signature += 1
+        self.processed += 1
 
 
 class DataStream(NumericProcessor, TextProcessor, LogProcessor):
     def __init__(self):
         super().__init__()
+        self.processors = []
 
     def register_processor(self, proc: DataProcessor) -> None:
-        self.num_proc = NumericProcessor()
-        self.text_proc = TextProcessor()
-        self.log_proc = LogProcessor()
+            if not isinstance(proc, DataProcessor):
+                print("No processor found, no data\n")
+                return
+            if proc not in self.processors:
+                self.processors.append(proc)
 
     def process_stream(self, stream: list[Any]) -> None:
-        for process in stream:
-            if self.num_proc.validate(process):
-                self.num_proc.ingest(process)
-            elif self.text_proc.validate(process):
-                self.text_proc.ingest(process)
-            elif self.log_proc.validate(process):
-                self.log_proc.ingest(process)
-            else:
-                print("No processor found, no data")
+        self.register_processor
+        for data in stream:
+            handled = False
+            for proc in self.processors:
+                if proc.validate(data):
+                    proc.ingest(data)
+                    handled = True
+                    break
+            if handled is False:
+                print(f"Data Stream error - Can't process element in stream: {data}")
 
     def print_processors_stats(self) -> None:
         print("=== DataStream statistics ===")
-        print(f"Numeric Processor: total {len(self.num_proc.processor)}")
+        for proc in self.processors:
+            remaining = len(proc.processor)
+            print(
+                f"{type(proc).__name__}: "
+                f"total {proc.processed} items processed, "
+                f"remaining {remaining} on processor"
+            )
                 
 
 if __name__ == "__main__":
-    print("=== Code Nexus - Data Processor ===")
-    print("\nTesting Numeric Processor...")
-    NumProc = NumericProcessor()
-    numdata = [1, 2, 3, 4, 5]
-    textdata = ["Hello", "Nexus", "World"]
-    logdata = [{'log_level': 'NOTICE', 'log_message': 'Connection to server'}, {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'}]
-    TextProc = TextProcessor()
-    LogProc = LogProcessor()
-    print(f"Trying to validate input '42': {NumProc.validate(42)}")
-    print(f"Test invalid ingestion of string 'foo' without prior validation:")
-    NumProc.ingest("foo")
-    print("Processing data: [1, 2, 3, 4, 5]")
-    NumProc.ingest(numdata)
-    print("Extracting 3 values...")
-    for _ in range(3):
-        info = NumProc.output()
-        print(f"Numeric value {info[0]}: {info[1]}")
-    print("\n Testing Text Processor...")
-    print(f"Trying to validate input '42': {TextProc.validate(42)}")
-    print(f"Processing data: {textdata}")
-    TextProc.ingest(textdata)
-    print("extracting 1 value...")
-    text_info = TextProc.output()
-    print(f"Text value {text_info[0]}: {text_info[1]}\n")
-    print("Testing Log Processor...")
-    print(f"Trying to validate input 'Hello': {LogProc.validate('Hello')}")
-    print(f"Processing data: {logdata}")
-    LogProc.ingest(logdata)
-    print("Extracting 2 values...")
-    for _ in range(2):
-        log_info = LogProc.output()
-        print(f"Log entry {log_info[0]}: {log_info[1]}")
+    print("=== Code Nexus - Data Stream ===\n")
+    print("== DataStream ==")
+    data_stream = DataStream()
+    data_stream.register_processor("Dupa")
+    data_1 = ['Hello world', [3.14, -1, 2.71], [{'log_level': 'WARNING', 'log_message': 'Telnet access! Use ssh instead'}, {'log_level': 'INFO', 'log_message': 'User wil isconnected'}], 42, ['Hi', 'five']]
+    print("Registering Numeric Processor")
+    data_stream.register_processor(NumericProcessor())
+    print(f"Send first batch of data on stream: {data_1}")
+    data_stream.process_stream(data_1)
+    data_stream.print_processors_stats()
+    print("Registering other data processors")
+    data_stream.register_processor(TextProcessor())
+    data_stream.register_processor(LogProcessor())
+    print("Send the same batch again")
+    data_stream.process_stream(data_1)
+    data_stream.print_processors_stats()
+    print("Consume some elements from the data processors: Numeric 3, Text 2, Log 1")
+    for i in range(3):
+        if i < 1:
+            x = data_stream.processors[2].output()
+        if i < 2:
+            x = data_stream.processors[1].output()
+        if i < 3:
+            x = data_stream.processors[0].output()
+    data_stream.print_processors_stats()
+
+
+
+
+
+
